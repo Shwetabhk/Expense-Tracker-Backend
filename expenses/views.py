@@ -17,11 +17,19 @@ class ExpenseCreateView(generics.ListCreateAPIView):
 
     def post(self, request):
         try:
-            expense = Expense.objects.create(
-                name=request.data["name"],
-                picture=request.FILES["picture"],
-                total=request.data["total"]
-            )
+            try:
+                expense = Expense.objects.create(
+                    name=request.data["name"],
+                    image=request.FILES["image"],
+                    total=request.data["total"],
+                    date=request.data["date"]
+                )
+            except:
+                expense = Expense.objects.create(
+                    name=request.data["name"],
+                    total=request.data["total"],
+                    date=request.data["date"]
+                )
             return Response(
                 data=ExpenseSerializer(expense).data,
                 status=status.HTTP_201_CREATED

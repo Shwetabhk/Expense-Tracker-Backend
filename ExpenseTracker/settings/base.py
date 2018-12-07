@@ -14,7 +14,8 @@ import os
 import datetime
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -149,10 +150,10 @@ REST_FRAMEWORK = {
 
 
 
-JJWT_AUTH = {
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(hours=36),
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=36),
     'JWT_ALLOW_REFRESH': True,
-    'JWT_RESPONSE_PAYLOAD_HANDLER': 'user.utils.jwt_response_handler',
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'users.utils.jwt_response_handler',
 }
 
 
@@ -164,5 +165,3 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static", "static_root")
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "static", "media_root")
-
-from ExpenseTracker.aws.conf import *

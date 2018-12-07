@@ -155,10 +155,10 @@ REST_FRAMEWORK = {
 
 
 
-JJWT_AUTH = {
+JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': datetime.timedelta(hours=36),
     'JWT_ALLOW_REFRESH': True,
-    'JWT_RESPONSE_PAYLOAD_HANDLER': 'user.utils.jwt_response_handler',
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'users.utils.jwt_response_handler',
 }
 
 
