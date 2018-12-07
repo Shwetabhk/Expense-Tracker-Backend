@@ -7,7 +7,6 @@
 /ExpenseTracker/__pycache__/
 /ExpenseTracker/aws/__pycache__/
 /ExpenseTracker/settings/__pycache__/
-ExpenseTracker/ExpenseTracker/settings/local.py
 
 /expenses/__pycache__/
 /expenses/migrations/__pycache__/
