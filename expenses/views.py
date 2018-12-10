@@ -40,7 +40,7 @@ class ExpenseCreateView(generics.ListCreateAPIView):
             })
 
 
-class ExpenseView(generics.RetrieveUpdateAPIView):
+class ExpenseView(generics.RetrieveUpdateDestroyAPIView):
 
     authentication_classes = (JSONWebTokenAuthentication,)
     permission_classes = (IsAuthenticated,)
