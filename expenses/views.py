@@ -1,5 +1,6 @@
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
@@ -92,3 +93,20 @@ class ExpenseView(generics.RetrieveUpdateDestroyAPIView):
                 },
                 status=status.HTTP_404_NOT_FOUND
             )
+
+
+
+class ExpenseGrandTotal(APIView):
+
+    def  get(self, request, *args, **kwargs):
+        expenses = Expense.objects.all()
+        sum_exp = 0
+        for expense in expenses:
+            sum_exp = sum_exp + expense.total
+            return Response(
+                data={
+                    'grand_total': sum_exp
+                },
+                status=status.HTTP_200_OK
+            )
+
