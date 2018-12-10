@@ -75,3 +75,20 @@ class ExpenseView(generics.RetrieveUpdateAPIView):
             )
 
 
+    def delete(self, request, *args, **kwargs):
+        try:
+            expense = self.queryset.get(pk=kwargs["pk"])
+            expense.delete()
+            return Response(
+                data={
+                    'Deleted': True
+                },
+                status=status.HTTP_200_OK
+            )
+        except Expense.DoesNotExist:
+            return Response(
+                data={
+                    "message": "Expense does not exit"
+                },
+                status=status.HTTP_404_NOT_FOUND
+            )
