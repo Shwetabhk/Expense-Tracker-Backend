@@ -110,3 +110,23 @@ class ExpenseGrandTotal(APIView):
                 status=status.HTTP_200_OK
             )
 
+
+class ExpenseSortView(APIView):
+
+    def get(self, request, *args, **kwargs):
+        sort_field = kwargs["pk"]
+        expenses = []
+        if sort_field == 1:
+            expenses = Expense.objects.order_by('-date').all()
+        elif sort_field == 2:
+            expenses = Expense.objects.order_by('name').all()
+        elif sort_field == 3:
+            expenses = Expense.objects.order_by('-total').all()
+        else:
+            return Response(
+                data={
+                    'error': "Seems like you called the wrong url",
+                },
+                status = status.HTTP_404_NOT_FOUND
+            )
+        return Response(ExpenseSerializer(expenses, many=True).data)
