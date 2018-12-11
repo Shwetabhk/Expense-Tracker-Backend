@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '+8f6uto+utyr8*w6hn)0c-ftk=o9_xnkw+6+y_x0#vu*!yz0fn'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     "expen-track.herokuapp.com",
