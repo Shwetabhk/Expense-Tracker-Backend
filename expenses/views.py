@@ -130,3 +130,35 @@ class ExpenseSortView(APIView):
                 status = status.HTTP_404_NOT_FOUND
             )
         return Response(ExpenseSerializer(expenses, many=True).data)
+
+
+class ExpenseFilterView(APIView):
+
+    def get(self, request, *args, **kwargs):
+        try:
+            expenses = Expense.objects.exclude(image='').all()
+            return Response(ExpenseSerializer(expenses, many=True).data)
+
+        except Exception as e:
+            return Response(
+                data={
+                    "message": "Not Found or Something went wrong",
+                },
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+class ExpenseSearchView(APIView):
+
+    def get(self, request, *args, **kwargs):
+        try:
+            query = request.GET["query"]
+            expenses = Expense.objects.filter(name__icontains=query).all()
+            return Response(ExpenseSerializer(expenses, many=True).data)
+
+        except Exception as e:
+            return Response(
+                data={
+                    "message": "Not Found or Something went wrong",
+                },
+                status=status.HTTP_404_NOT_FOUND
+            )
