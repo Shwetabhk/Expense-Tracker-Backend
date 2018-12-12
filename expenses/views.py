@@ -18,7 +18,7 @@ class ExpenseCreateView(generics.ListCreateAPIView):
 
     def get(self, request, *args, **kwargs):
         try:
-            expense = self.queryset.filter(user=request.user).all()
+            expense = Expense.objects.filter(user=request.user).all()
             return Response(ExpenseSerializer(expense, many=True).data)
         except Expense.DoesNotExist:
             return Response(
