@@ -1,6 +1,8 @@
 import os
 import random
 from django.db import models
+from users.models import User
+
 
 
 def get_file_ext(filepath):
@@ -19,6 +21,7 @@ class Expense(models.Model):
 	total = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
 	image = models.ImageField(upload_to=upload_image_path, null=True, blank=True)
 	date = models.DateField()
+	user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
 
 	def __str__(self):
 		return self.name.replace(" ", "_") + str(self.date)

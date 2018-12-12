@@ -28,7 +28,6 @@ DEBUG = False
 
 ALLOWED_HOSTS = [
     "expen-track.herokuapp.com",
-    "expenses-backend.herokuapp.com"
 ]
 
 

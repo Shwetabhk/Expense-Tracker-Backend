@@ -16,6 +16,19 @@ class ExpenseCreateView(generics.ListCreateAPIView):
     queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
 
+    def get(self, request, *args, **kwargs):
+        try:
+            expense = self.queryset.filter(user=request.user).all()
+            return Response(ExpenseSerializer(expense, many=True).data)
+        except Expense.DoesNotExist:
+            return Response(
+                data={
+                    "message": "Expense does not exist"
+                },
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+
     def post(self, request):
         try:
             try:
@@ -23,13 +36,15 @@ class ExpenseCreateView(generics.ListCreateAPIView):
                     name=request.data["name"],
                     image=request.FILES["image"],
                     total=request.data["total"],
-                    date=request.data["date"]
+                    date=request.data["date"],
+                    user=request.user
                 )
             except:
                 expense = Expense.objects.create(
                     name=request.data["name"],
                     total=request.data["total"],
-                    date=request.data["date"]
+                    date=request.data["date"],
+                    user=request.user
                 )
             return Response(
                 data=ExpenseSerializer(expense).data,
@@ -99,7 +114,7 @@ class ExpenseView(generics.RetrieveUpdateDestroyAPIView):
 class ExpenseGrandTotal(APIView):
 
     def  get(self, request, *args, **kwargs):
-        expenses = Expense.objects.all()
+        expenses = Expense.objects.filter(user=request.user).all()
         sum_exp = 0
         for expense in expenses:
             sum_exp = sum_exp + expense.total
@@ -113,15 +128,16 @@ class ExpenseGrandTotal(APIView):
 
 class ExpenseSortView(APIView):
 
+
     def get(self, request, *args, **kwargs):
         sort_field = kwargs["pk"]
         expenses = []
         if sort_field == 1:
-            expenses = Expense.objects.order_by('-date').all()
+            expenses = Expense.objects.filter(user=request.user).order_by('-date').all()
         elif sort_field == 2:
-            expenses = Expense.objects.order_by('name').all()
+            expenses = Expense.objects.filter(user=request.user).order_by('name').all()
         elif sort_field == 3:
-            expenses = Expense.objects.order_by('-total').all()
+            expenses = Expense.objects.filter(user=request.user).order_by('-total').all()
         else:
             return Response(
                 data={
@@ -136,7 +152,7 @@ class ExpenseFilterView(APIView):
 
     def get(self, request, *args, **kwargs):
         try:
-            expenses = Expense.objects.exclude(image='').all()
+            expenses = Expense.objects.filter(user=request.user).exclude(image='').all()
             return Response(ExpenseSerializer(expenses, many=True).data)
 
         except Exception as e:
@@ -152,7 +168,7 @@ class ExpenseSearchView(APIView):
     def get(self, request, *args, **kwargs):
         try:
             query = request.GET["query"]
-            expenses = Expense.objects.filter(name__icontains=query).all()
+            expenses = Expense.objects.filter(name__icontains=query, user=request.user).all()
             return Response(ExpenseSerializer(expenses, many=True).data)
 
         except Exception as e:
